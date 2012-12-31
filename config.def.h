@@ -17,6 +17,7 @@ static gfloat zoomlevel = 1.0;       /* Default zoom level */
 static char *cookiefile     = "~/.surf/surf2cookies.txt";
 static char *cookiepolicies = "Aa@"; /* A: accept all; a: accept nothing,
                                         @: accept no third party */
+static char *filterfile     = "~/.surf/filter.txt";
 static Bool strictssl       = FALSE; /* Refuse untrusted SSL connections */
 
 /* Webkit default features */
