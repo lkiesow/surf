@@ -213,6 +213,20 @@ static void windowobjectcleared(GtkWidget *w, WebKitWebFrame *frame,
                                 JSContextRef js, JSObjectRef win, Client *c);
 static void zoom(Client *c, const Arg *arg);
 
+/* Filter and matching functions */
+
+int	match(const char*, const char*);
+int	matchhere(const char*, const char*);
+int	matchstar(int, const char*, const char*);
+
+int filter_load();
+int filter_match(const char *s, unsigned int idx);
+int filter_match_any(const char *s);
+
+char   filterbuf[1024*1024];
+char*  filterstr[1024];
+int    filterlen = 0;
+
 /* configuration, allows nested code to access above variables */
 #include "config.h"
 
@@ -238,6 +252,11 @@ beforerequest(WebKitWebView *w, WebKitWebFrame *f, WebKitWebResource *r,
 {
 	const gchar *uri = webkit_network_request_get_uri(req);
 	int i, isascii = 1;
+
+	if (filter_match_any(uri)) {
+		/* If filter matches, prevent page from loading */
+		webkit_network_request_set_uri(req, "about:blank");
+	}
 
 	if (g_str_has_suffix(uri, "/favicon.ico"))
 		webkit_network_request_set_uri(req, "about:blank");
@@ -1653,6 +1672,100 @@ zoom(Client *c, const Arg *arg)
 		webkit_web_view_set_zoom_level(c->view, 1.0);
 	}
 }
+
+
+/* matchhere: search for regexp at beginning of text */
+int matchhere(const char *regexp, const char *text)
+{
+	if (regexp[0] == '\0')
+		return 1;
+	if (regexp[1] == '*')
+		return matchstar(regexp[0], regexp+2, text);
+	if (regexp[0] == '$' && regexp[1] == '\0')
+		return *text == '\0';
+	if (*text!='\0' && (regexp[0]=='.' || regexp[0]==*text))
+		return matchhere(regexp+1, text+1);
+	return 0;
+}
+
+
+/* match: search for regexp anywhere in text */
+int match(const char *regexp, const char *text)
+{
+	if (regexp[0] == '^')
+		return matchhere(regexp+1, text);
+	do {	/* must look even if string is empty */
+		if (matchhere(regexp, text))
+			return 1;
+	} while (*text++ != '\0');
+	return 0;
+}
+
+
+/* matchstar: search for c*regexp at beginning of text */
+int matchstar(int c, const char *regexp, const char *text)
+{
+	do {	/* a * matches zero or more instances */
+		if (matchhere(regexp, text))
+			return 1;
+	} while (*text != '\0' && (*text++ == c || c == '.'));
+	return 0;
+}
+
+
+int filter_load()
+{
+	/** 
+	 * If filter are already loaded 
+	 * return the amount of filters.
+	 **/
+	if (filterlen) {
+		return filterlen;
+	}
+	/* Otherwise read them from filterfile. */
+	FILE* f = fopen(buildpath(filterfile), "r");
+	if (!f) {
+		filterlen = 0;
+		return 0;
+	}
+	char buf[1024];
+	char* bufpos = filterbuf;
+	filterlen = 0;
+	while ( fgets(buf, 1024, f) ) {
+		if (strlen(buf) && buf[strlen(buf)-1] == '\n') {
+			buf[strlen(buf)-1] = 0;
+		}
+		strcpy( bufpos, buf );
+		filterstr[filterlen] = bufpos;
+		bufpos += strlen(buf) + 1;
+		filterlen++;
+	}
+	fclose(f);
+	return filterlen;
+}
+
+
+int filter_match(const char *s, unsigned int idx)
+{
+	/* Check if we are in bounds */
+	if (idx >= filter_load()) {
+		return 0;
+	}
+	return match( filterstr[idx], s );
+}
+
+
+int filter_match_any(const char *s)
+{
+	int i;
+	for ( i = 0; i < filter_load(); i++ ) {
+		if (match( filterstr[i], s )) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 
 int
 main(int argc, char *argv[])
