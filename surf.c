@@ -34,6 +34,14 @@ char *argv0;
 #define COOKIEJAR_TYPE          (cookiejar_get_type ())
 #define COOKIEJAR(obj)          (G_TYPE_CHECK_INSTANCE_CAST ((obj), COOKIEJAR_TYPE, CookieJar))
 
+#define COLOR_RED     "\x1b[31m"
+#define COLOR_GREEN   "\x1b[32m"
+#define COLOR_YELLOW  "\x1b[33m"
+#define COLOR_BLUE    "\x1b[34m"
+#define COLOR_MAGENTA "\x1b[35m"
+#define COLOR_CYAN    "\x1b[36m"
+#define COLOR_RESET   "\x1b[0m"
+
 enum { AtomFind, AtomGo, AtomUri, AtomLast };
 enum {
 	ClkDoc   = WEBKIT_HIT_TEST_RESULT_CONTEXT_DOCUMENT,
@@ -102,6 +110,7 @@ static GdkNativeWindow embed = 0;
 static gboolean showxid = FALSE;
 static char winid[64];
 static gboolean usingproxy = 0;
+static gboolean logurls = 0;
 static char togglestat[9];
 static char pagestat[3];
 static GTlsDatabase *tlsdb;
@@ -218,7 +227,7 @@ int	matchstar(int, const char*, const char*);
 
 int filter_load();
 int filter_match(const char *s, unsigned int idx);
-int filter_match_any(const char *s);
+char* filter_match_any(const char *s);
 
 char   filterbuf[1024*1024];
 char*  filterstr[1024];
@@ -246,11 +255,23 @@ beforerequest(WebKitWebView *w, WebKitWebFrame *f, WebKitWebResource *r,
 		WebKitNetworkRequest *req, WebKitNetworkResponse *resp,
 		Client *c) {
 	const gchar *uri = webkit_network_request_get_uri(req);
+
 	int i, isascii = 1;
 
-	if (filter_match_any(uri)) {
-		/* If filter matches, prevent page from loading */
-		webkit_network_request_set_uri(req, "about:blank");
+	if (logurls) {
+		char * matching = NULL;
+		if ((matching = filter_match_any(uri))) {
+			/* If filter matches, prevent page from loading */
+			printf("%sLoading \"%s\"  ->  blocked (%s)%s\n", COLOR_RED, uri, matching, COLOR_RESET);
+			webkit_network_request_set_uri(req, "about:blank");
+		} else {
+			printf("%sLoading \"%s\"  ->  ok%s\n", COLOR_GREEN, uri, COLOR_RESET);
+		}
+	} else {
+		if (filter_match_any(uri)) {
+			/* If filter matches, prevent page from loading */
+			webkit_network_request_set_uri(req, "about:blank");
+		}
 	}
 
 	if(g_str_has_suffix(uri, "/favicon.ico"))
@@ -1644,15 +1665,15 @@ int filter_match(const char *s, unsigned int idx)
 }
 
 
-int filter_match_any(const char *s)
+char *filter_match_any(const char *s)
 {
 	int i;
 	for ( i = 0; i < filter_load(); i++ ) {
 		if (match( filterstr[i], s )) {
-			return 1;
+			return filterstr[i];
 		}
 	}
-	return 0;
+	return NULL;
 }
 
 
@@ -1710,6 +1731,9 @@ main(int argc, char *argv[]) {
 	case 'K':
 		kioskmode = 1;
 		break;
+	case 'l':
+		logurls = 1;
+		break;
 	case 'm':
 		enablestyles = 0;
 		break;
@@ -1727,7 +1751,7 @@ main(int argc, char *argv[]) {
 		break;
 	case 'P':
 		enableplugins = 1;
-		break;
+		vreak;
 	case 'r':
 		scriptfile = EARGF(usage());
 		break;
@@ -1754,6 +1778,7 @@ main(int argc, char *argv[]) {
 		break;
 	case '0':
 		filterfile = EARGF(usage());
+		break;
 	default:
 		usage();
 	} ARGEND;
