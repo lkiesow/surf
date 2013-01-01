@@ -1642,8 +1642,13 @@ int filter_load()
 	char* bufpos = filterbuf;
 	filterlen = 0;
 	while ( fgets(buf, 1024, f) ) {
+		/* Remove newline characters */
 		if (strlen(buf) && buf[strlen(buf)-1] == '\n') {
 			buf[strlen(buf)-1] = 0;
+		}
+		/* Remove empty lines and comments. */
+		if (!strlen(buf) || buf[0] == '#') {
+			continue;
 		}
 		strcpy( bufpos, buf );
 		filterstr[filterlen] = bufpos;
