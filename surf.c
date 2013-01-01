@@ -1644,9 +1644,12 @@ updatewinid(Client *c)
 void
 usage(void)
 {
-	die("usage: %s [-bBdDfFgGiIkKmMnNpPsSvx] [-a cookiepolicies ] "
-	    "[-c cookiefile] [-e xid] [-r scriptfile] [-t stylefile] "
-	    "[-u useragent] [-z zoomlevel] [uri]\n", basename(argv0));
+	die("usage: %s [-bBdDfFgGiIkKmMnNpPsSvx0]"
+		" [-a cookiepolicies ] "
+		" [-c cookiefile] [-e xid] [-r scriptfile]"
+		" [-t stylefile] [-u useragent] [-z zoomlevel]"
+		" [-0 filterile]"
+		" [uri]\n", basename(argv0));
 }
 
 void
@@ -1864,6 +1867,8 @@ main(int argc, char *argv[])
 	case 'z':
 		zoomlevel = strtof(EARGF(usage()), NULL);
 		break;
+	case '0':
+		filterfile = EARGF(usage());
 	default:
 		usage();
 	} ARGEND;
