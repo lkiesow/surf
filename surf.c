@@ -258,11 +258,22 @@ beforerequest(WebKitWebView *w, WebKitWebFrame *f, WebKitWebResource *r,
 
 	int i, isascii = 1;
 
-	if (logurls) {
+	if (strstr(uri, "data:") != uri) {
+		if (logurls) {
+			char* tmp = g_strdup(uri);
+			if (strlen(tmp) > 22) {
+				tmp[22] = 0;
+			}
+			printf("%sLoading data uri (%s...) -> not filtering%s\n",
+					COLOR_BLUE, tmp, COLOR_RESET);
+			g_free(tmp);
+		}
+	} else if (logurls) {
 		char * matching = NULL;
 		if ((matching = filter_match_any(uri))) {
 			/* If filter matches, prevent page from loading */
-			printf("%sLoading \"%s\"  ->  blocked (%s)%s\n", COLOR_RED, uri, matching, COLOR_RESET);
+			printf("%sLoading \"%s\"  ->  blocked (%s)%s\n", 
+					COLOR_RED, uri, matching, COLOR_RESET);
 			webkit_network_request_set_uri(req, "about:blank");
 		} else {
 			printf("%sLoading \"%s\"  ->  ok%s\n", COLOR_GREEN, uri, COLOR_RESET);
@@ -1756,7 +1767,7 @@ main(int argc, char *argv[]) {
 		break;
 	case 'P':
 		enableplugins = 1;
-		vreak;
+		break;
 	case 'r':
 		scriptfile = EARGF(usage());
 		break;
