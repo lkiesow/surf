@@ -226,12 +226,14 @@ int	matchhere(const char*, const char*);
 int	matchstar(int, const char*, const char*);
 
 int filter_load();
-int filter_match(const char *s, unsigned int idx);
+int filter_match(const char *s, unsigned int idx, int isregexp);
 char* filter_match_any(const char *s);
 
 char   filterbuf[1024*1024];
 char*  filterstr[1024];
-int    filterlen = 0;
+char*  filterregexp[1024];
+int    filterstrlen = 0;
+int    filterregexplen = 0;
 
 /* configuration, allows nested code to access above variables */
 #include "config.h"
@@ -1640,18 +1642,18 @@ int filter_load()
 	 * If filter are already loaded 
 	 * return the amount of filters.
 	 **/
-	if (filterlen) {
-		return filterlen;
+	if (filterstrlen || filterregexplen) {
+		return 1;
 	}
+	filterstrlen = 0;
+	filterregexplen = 0;
 	/* Otherwise read them from filterfile. */
 	FILE* f = fopen(buildpath(filterfile), "r");
 	if (!f) {
-		filterlen = 0;
 		return 0;
 	}
 	char buf[1024];
 	char* bufpos = filterbuf;
-	filterlen = 0;
 	while ( fgets(buf, 1024, f) ) {
 		/* Remove newline characters */
 		if (strlen(buf) && buf[strlen(buf)-1] == '\n') {
@@ -1661,32 +1663,51 @@ int filter_load()
 		if (!strlen(buf) || buf[0] == '#') {
 			continue;
 		}
-		strcpy( bufpos, buf );
-		filterstr[filterlen] = bufpos;
+		/* Determine if string is regexp or normal string. We tread strings which
+		 * start with | as regular expressions as the | character should not be
+		 * part of any url. */
+		if (buf[0] == '|') {
+			strcpy( bufpos, buf+1 ); /* We won't copy the | character */
+			filterregexp[filterregexplen] = bufpos;
+			filterregexplen++;
+		} else {
+			strcpy( bufpos, buf ); 
+			filterstr[filterstrlen] = bufpos;
+			filterstrlen++;
+		}
 		bufpos += strlen(buf) + 1;
-		filterlen++;
 	}
 	fclose(f);
-	return filterlen;
+	return 1;
 }
 
 
-int filter_match(const char *s, unsigned int idx)
+int filter_match(const char *s, unsigned int idx, int isregexp)
 {
-	/* Check if we are in bounds */
-	if (idx >= filter_load()) {
-		return 0;
+	/* Make sure filter is loaded */
+	filter_load();
+	/* Handle RegExp */
+	if (isregexp) {
+		return (idx >= filterregexplen) ? 0 : match( filterregexp[idx], s );
 	}
-	return match( filterstr[idx], s );
+	/* Handle normal substring */
+	return (idx < filterstrlen) && g_strrstr(s, filterstr[idx]) ? 1 : 0;
 }
 
 
 char *filter_match_any(const char *s)
 {
+	/* Make sure filter is loaded */
+	filter_load();
 	int i;
-	for ( i = 0; i < filter_load(); i++ ) {
-		if (match( filterstr[i], s )) {
+	for ( i = 0; i < filterstrlen; i++ ) {
+		if (g_strrstr(s, filterstr[i])) {
 			return filterstr[i];
+		}
+	}
+	for ( i = 0; i < filterregexplen; i++ ) {
+		if (match( filterregexp[i], s )) {
+			return filterregexp[i];
 		}
 	}
 	return NULL;
