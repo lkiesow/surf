@@ -29,6 +29,7 @@
 #Don't allow Facebook without a secure connection
 http://.*fbcdn.net.*
 http://.*facebook.com/.*
+http://.*facebook.net/.*
 .*addthis.com.*
 .*adcash.com.*
 .*admeld.com.*
@@ -43,3 +44,11 @@ http://.*facebook.com/.*
 .*mgid.com.*
 .*scorecardresearch.com.*
 .*dt07.net.*
+.*adnxs.com.*
+.*adform.net.*
+.*ad.*adition.com.*
+.*histats.com.*
+.*FriendlyDuck.com.*
+.*xtendmedia.com.*
+.*firstload.de.*
+.*firstload.com.*
