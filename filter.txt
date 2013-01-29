@@ -26,6 +26,7 @@ adtech.de
 advertising
 doubleclick.net
 dt07.net
+fhserve.com
 firstload.
 geilundlive
 google-analytics
@@ -40,7 +41,9 @@ mgid.com
 rotator.trafficbee
 scorecardresearch.com
 sharethis.com
+sitescout.com
 sponsorads
+statcounter.com
 tldadserv.com
 traffichaus.com
 whaleserver.com
