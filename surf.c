@@ -1123,13 +1123,17 @@ processx(GdkXEvent *e, GdkEvent *event, gpointer d) {
 			} else if(ev->atom == atoms[AtomGo]) {
 				arg.v = getatom(c, AtomGo);
 				if (strstr((char*) arg.v, "g ") && strlen((char*) arg.v) > 2) {
-					arg.v = g_strdup_printf("http://www.google.de/search?q=%s", ((char*) arg.v)+2);
+					arg.v = g_strdup_printf("http://www.google.de/search?q=%s", 
+							((char*) arg.v)+2);
 				} else if (strstr((char*) arg.v, "ew ") && strlen((char*) arg.v) > 3) {
 					arg.v = g_strdup_printf("http://en.wikipedia.org/w/index.php"
 							"?search=%s&title=Special%%3ASearch", ((char*) arg.v)+3);
 				} else if (strstr((char*) arg.v, "w ") && strlen((char*) arg.v) > 2) {
 					arg.v = g_strdup_printf("http://de.wikipedia.org/w/index.php"
 							"?search=%s&title=Special%%3ASearch", ((char*) arg.v)+2);
+				} else if (strstr((char*) arg.v, "y ") && strlen((char*) arg.v) > 2) {
+					arg.v = g_strdup_printf("http://www.youtube.com/results"
+							"?search_query=%s", ((char*) arg.v)+2);
 				}
 				loaduri(c, &arg);
 
