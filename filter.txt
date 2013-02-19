@@ -8,6 +8,7 @@
 #   the specific string will be blocked.
 
 FriendlyDuck.com
+ad.velmedia.net
 adbrite.com
 adcash.com
 adcell.de
@@ -18,14 +19,18 @@ adnxs.com
 adperium.com
 ads.pubmatic.com
 ads.techclicks.net
+ads.tlvmedia
 adserve
 adspirit
 adspring.to
 adsrvr.org
 adtech.de
 advertising
+amazon-adsystem
 doubleclick.net
 dt07.net
+exchangecash.de
+exoclick.com
 fhserve.com
 firstload.
 geilundlive
@@ -46,9 +51,12 @@ sponsorads
 statcounter.com
 tldadserv.com
 traffichaus.com
+twimg.com/
+vuiads.org
 whaleserver.com
 wigetmedia.com
 xtendmedia.com
+ycasmd.info
 yieldads
 yieldmanager.com
 zeusclicks
