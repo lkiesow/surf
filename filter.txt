@@ -7,6 +7,7 @@
 # - If neither of the above rules apply then sites which contains 
 #   the specific string will be blocked.
 
+4dsply.com
 FriendlyDuck.com
 ad.velmedia.net
 adbrite.com
@@ -15,9 +16,11 @@ adcell.de
 addthis.com
 adform.net
 admeld.com
+adnet.de
 adnxs.com
 adperium.com
 ads.pubmatic.com
+ads.reelvidz.com
 ads.techclicks.net
 ads.tlvmedia
 adserve
@@ -26,7 +29,10 @@ adspring.to
 adsrvr.org
 adtech.de
 advertising
+affbuzzads
 amazon-adsystem
+blackbeats.fm
+campartner.com
 doubleclick.net
 dt07.net
 exchangecash.de
@@ -34,6 +40,7 @@ exoclick.com
 fhserve.com
 firstload.
 geilundlive
+gmads.net
 google-analytics
 googleads
 gostats.com
@@ -43,6 +50,7 @@ juicyads.com
 layer-ad
 livejasmin.com
 mgid.com
+qservz.com
 rotator.trafficbee
 scorecardresearch.com
 sharethis.com
@@ -59,7 +67,9 @@ xtendmedia.com
 ycasmd.info
 yieldads
 yieldmanager.com
+zedo.com
 zeusclicks
+|.*edgecastcdn.net/.*/banners/.*
 |.*ad.*adition.com.*
 |.*ad.*googlesyndication.com.*
 |.*ads.*brazzers.*
