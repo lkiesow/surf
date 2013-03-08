@@ -1134,6 +1134,10 @@ processx(GdkXEvent *e, GdkEvent *event, gpointer d) {
 				} else if (strstr((char*) arg.v, "y ") && strlen((char*) arg.v) > 2) {
 					arg.v = g_strdup_printf("http://www.youtube.com/results"
 							"?search_query=%s", ((char*) arg.v)+2);
+				} else if (strstr((char*) arg.v, "en ") && strlen((char*) arg.v) > 3) {
+					arg.v = g_strdup_printf("http://dict.leo.org"
+							"/dictQuery/m-vocab/ende/en.html?search=%s", 
+							((char*) arg.v)+2);
 				}
 				loaduri(c, &arg);
 
