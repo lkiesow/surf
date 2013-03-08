@@ -9,6 +9,7 @@
 
 /newlay/
 4dsply.com
+9yx.com
 FriendlyDuck.com
 ad.velmedia.net
 ad.zanox.com
@@ -57,6 +58,7 @@ cyonix.to
 dnsadvantage.com
 doubleclick.net
 dt07.net
+edgesuite.net
 emediate.eu
 exchangecash.de
 exoclick.com
@@ -73,11 +75,14 @@ googleads
 gostats.com
 hdpornleech.com
 histats.com
+i.po.st
+infolinks.com
 interracialbangblog.info
 jetload321.com
 juicyads.com
 layer-ad
 layer/layer.js
+linezing.com
 linkbucks.com/
 live6.com/
 livejasmin.com
@@ -96,6 +101,7 @@ popads.net
 popadscdn.net
 qservz.com
 quantserve.com
+resultsaccelerator.net
 rotator.trafficbee
 scorecardresearch.com
 semasio.net
@@ -127,6 +133,7 @@ xxxtubers.com
 ycasmd.info
 yieldads
 yieldmanager.com
+z5x.net
 zedo.com
 zeusclicks
 |.*edgecastcdn.net/.*/banners/.*
