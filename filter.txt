@@ -7,13 +7,17 @@
 # - If neither of the above rules apply then sites which contains 
 #   the specific string will be blocked.
 
+.com.com/
 /newlay/
+360yield.com
 4dsply.com
 9yx.com
 FriendlyDuck.com
+ad.turn.com
 ad.velmedia.net
 ad.zanox.com
 ad1.php
+adadvisor.net
 adaos-ads.net
 adbrite.com
 adbroker.de
@@ -48,7 +52,9 @@ amateurcommunity.com
 amazon-adsystem
 at.amgdgt.com
 auto-im.com
+bidswitch.net
 blackbeats.fm
+bluekai.com
 cambabestube.com
 campartner.com
 cbox.ws
@@ -56,6 +62,7 @@ clicksor.com/
 clicksor.net
 cyonix.to
 dnsadvantage.com
+dotomi.com/
 doubleclick.net
 dt07.net
 edgesuite.net
@@ -77,7 +84,9 @@ hdpornleech.com
 histats.com
 i.po.st
 infolinks.com
+insightexpressai.com
 interracialbangblog.info
+invitemedia.com
 jetload321.com
 juicyads.com
 layer-ad
@@ -103,6 +112,7 @@ qservz.com
 quantserve.com
 resultsaccelerator.net
 rotator.trafficbee
+rubiconproject.com
 scorecardresearch.com
 semasio.net
 sexpartnerx.com/
@@ -116,6 +126,7 @@ technik-test.info
 tldadserv.com
 traffichaus.com
 tribalfusion.com
+triggit.com
 twimg.com/
 twitter.com/widgets/tweet_button
 uimserv.net
