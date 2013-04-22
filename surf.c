@@ -1138,6 +1138,16 @@ processx(GdkXEvent *e, GdkEvent *event, gpointer d) {
 					arg.v = g_strdup_printf("http://dict.leo.org"
 							"/dictQuery/m-vocab/ende/en.html?search=%s", 
 							((char*) arg.v)+2);
+				} else if (strstr((char*) arg.v, "i ") && strlen((char*) arg.v) > 2) {
+					/* Replace spaces by + as spaces (%20) won't work: */
+					char* c = (char*) arg.v;
+					for (; *c != 0; c++) {
+						if (*c == ' ') {
+							*c = '+';
+						}
+					}
+					arg.v = g_strdup_printf("http://imdb.com/"
+							"find?s=tt&ttype=ft&q=%s", ((char*) arg.v)+2);
 				}
 				loaduri(c, &arg);
 
