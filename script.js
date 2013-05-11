@@ -4,8 +4,6 @@ if (!(
 			window.location.href.match(/https*:\/\/docs.google.com\/.*/)
 	  )) {
 	window.open_bak = window.open;
-	alert('blocking popups');
-
 
 	window.open = function(a,b,c) {
 		/* TODO: Popup message in top right corner */
