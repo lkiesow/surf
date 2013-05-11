@@ -55,6 +55,7 @@ auto-im.com
 bidswitch.net
 blackbeats.fm
 bluekai.com
+bornpay.com
 cambabestube.com
 campartner.com
 cbox.ws
@@ -95,6 +96,8 @@ linezing.com
 linkbucks.com/
 live6.com/
 livejasmin.com
+marketing-by-phone.de
+megastock.ru
 mgid.com
 mini-spiele.net
 mydirtyhobby.com
@@ -108,6 +111,8 @@ ourstats.de
 picload.org
 popads.net
 popadscdn.net
+propellerads.com
+propellerpops.com
 qservz.com
 quantserve.com
 resultsaccelerator.net
@@ -125,6 +130,7 @@ statcounter.com
 technik-test.info
 tldadserv.com
 traffichaus.com
+trafit.com
 tribalfusion.com
 triggit.com
 twimg.com/
@@ -141,6 +147,7 @@ xtendmedia.com
 xvalue.de
 xxx-ranking.net/
 xxxtubers.com
+yandex.ru
 ycasmd.info
 yieldads
 yieldmanager.com
