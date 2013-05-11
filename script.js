@@ -1,8 +1,16 @@
-window.open_bak = window.open;
+/* Disable popups (except for Google Drive) */
+if (!( 
+			window.location.href.match(/https*:\/\/drive.google.com\/.*/) ||
+			window.location.href.match(/https*:\/\/docs.google.com\/.*/)
+	  )) {
+	window.open_bak = window.open;
+	alert('blocking popups');
 
-window.open = function(a,b,c) {
-	/* TODO: Popup message in top right corner */
-};
+
+	window.open = function(a,b,c) {
+		/* TODO: Popup message in top right corner */
+	};
+}
 
 function centerbody(e) {
 	var e = window.event ? event : e;
