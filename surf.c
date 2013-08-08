@@ -1137,7 +1137,7 @@ void
 newwindow(Client *c, const Arg *arg, gboolean noembed)
 {
 	guint i = 0;
-	const char *cmd[18], *uri;
+	const char *cmd[19], *uri;
 	const Arg a = { .v = (void *)cmd };
 	char tmp[64];
 
@@ -1165,6 +1165,8 @@ newwindow(Client *c, const Arg *arg, gboolean noembed)
 		cmd[i++] = "-x";
 	if (enablediskcache)
 		cmd[i++] = "-D";
+	if(logurls)
+		cmd[i++] = "-l";
 	cmd[i++] = "-c";
 	cmd[i++] = cookiefile;
 	cmd[i++] = "--";
