@@ -9,6 +9,7 @@
 
 .com.com/
 /newlay/
+32d1d3b9c.se
 360yield.com
 4dsply.com
 9yx.com
@@ -17,6 +18,7 @@ ad.turn.com
 ad.velmedia.net
 ad.zanox.com
 ad1.php
+ad4game.com
 adadvisor.net
 adaos-ads.net
 adbrite.com
@@ -30,9 +32,12 @@ adjug.com
 admeld.com
 adnet.de
 adnxs.com
+adonion.com
 adperium.com
+adrotator.se
 ads.heias.com
 ads.lzjl.com
+ads.porn
 ads.pubmatic.com
 ads.reelvidz.com
 ads.techclicks.net
@@ -53,6 +58,7 @@ amazon-adsystem
 at.amgdgt.com
 auto-im.com
 bidswitch.net
+binlayer.com
 blackbeats.fm
 bluekai.com
 bornpay.com
@@ -62,6 +68,7 @@ cbox.ws
 clicksor.com/
 clicksor.net
 cyonix.to
+d1110e4.se
 dnsadvantage.com
 dotomi.com/
 doubleclick.net
@@ -69,7 +76,6 @@ dt07.net
 edgesuite.net
 emediate.eu
 erotikdeal.com
-glam.com/
 exchangecash.de
 exoclick.com
 fastclick.net
@@ -78,6 +84,7 @@ firstload.
 friendlyduck.com/
 geilundlive
 gigaflat.com/
+glam.com/
 gmads.net
 google-analytics
 google.com/ads/
@@ -86,6 +93,7 @@ gostats.com
 hdpornleech.com
 histats.com
 i.po.st
+imediacorps.com
 infolinks.com
 insightexpressai.com
 interracialbangblog.info
@@ -94,14 +102,17 @@ jetload321.com
 juicyads.com
 layer-ad
 layer/layer.js
+lijit.com/
 linezing.com
 linkbucks.com/
 live6.com/
+liveadexchanger
 livejasmin.com
 marketing-by-phone.de
 megastock.ru
 mgid.com
 mini-spiele.net
+msecnd.net
 mydirtyhobby.com
 myfreebannercreator.com
 myroitracking.com
@@ -117,10 +128,12 @@ propellerads.com
 propellerpops.com
 qservz.com
 quantserve.com
+reduxmediia.com/
 resultsaccelerator.net
 rotator.trafficbee
 rubiconproject.com
 scorecardresearch.com
+search4passion.com
 semasio.net
 sexpartnerx.com/
 sharethis.com
@@ -130,11 +143,14 @@ slimtrade.com
 sponsorads
 statcounter.com
 technik-test.info
+tipico.com
 tldadserv.com
 traffichaus.com
 trafit.com
 tribalfusion.com
 triggit.com
+trw12.com
+tuberewards.com
 twimg.com/
 twitter.com/widgets/tweet_button
 uimserv.net
