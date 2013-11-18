@@ -43,6 +43,7 @@ ads.reelvidz.com
 ads.techclicks.net
 ads.tlvmedia
 adscale.de
+adserv.
 adserve
 adserving
 adshost2.com
@@ -52,6 +53,8 @@ adsrvr.org
 adtech.de
 adtiger.de
 advertising
+adxpansion.com
+adzerk.net
 affbuzzads
 amateurcommunity.com
 amazon-adsystem
@@ -65,6 +68,7 @@ bornpay.com
 cambabestube.com
 campartner.com
 cbox.ws
+cdn-careers.sstatic.net
 clicksor.com/
 clicksor.net
 cyonix.to
@@ -83,6 +87,7 @@ fhserve.com
 firstload.
 friendlyduck.com/
 geilundlive
+getiton.com
 gigaflat.com/
 glam.com/
 gmads.net
@@ -119,11 +124,14 @@ myroitracking.com
 network-media.info
 netxmedia.net
 nuggad.net
+onclickads.net
 onflash.de
+openx.informatm.com
 ourstats.de
 picload.org
 popads.net
 popadscdn.net
+pornerbros.com
 propellerads.com
 propellerpops.com
 qservz.com
@@ -172,11 +180,11 @@ yieldmanager.com
 z5x.net
 zedo.com
 zeusclicks
-|.*edgecastcdn.net/.*/banners/.*
 |.*ad.*adition.com.*
 |.*ad.*googlesyndication.com.*
 |.*ads.*brazzers.*
 |.*ads.*contentabc.*
+|.*edgecastcdn.net/.*/banners/.*
 #Don't allow Facebook without a secure connection
 |http://.*facebook.com/.*
 |http://.*facebook.net/.*
