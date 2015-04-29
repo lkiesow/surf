@@ -265,7 +265,7 @@ beforerequest(WebKitWebView *w, WebKitWebFrame *f, WebKitWebResource *r,
 
 	int i, isascii = 1;
 
-	if (strstr(uri, "data:") != uri) {
+	if (strstr(uri, "data:") == uri) {
 		if (logurls) {
 			char* tmp = g_strdup(uri);
 			if (strlen(tmp) > 22) {
