@@ -46,12 +46,13 @@ static Bool allowgeolocation      = TRUE;
 /* DOWNLOAD(URI, referer) */
 #define DOWNLOAD(d, r) { \
 	.v = (char *[]){ "/bin/sh", "-c", \
-		"st -e /bin/sh -c \"curl -L -J -O --user-agent '$1'" \
-		" --referer '$2' -b $3 -c $3 '$0';" \
-		" sleep 5;\"", \
-		d, useragent, r, cookiefile, NULL \
-	} \
-}
+	"lxterminal -e \"/bin/sh -c \\\"sed s/^#HttpOnly_// ~/.surf/cookies.txt > \
+		~/.surf/curl_cookies.txt; \
+		curl --cookie ~/.surf/curl_cookies.txt \
+		--user-agent '$1' '$0' --remote-header-name -O; \
+		rm -f ~/.surf/curl_cookies.txt; \
+		echo Hit return...; \
+		read \\\"\"", d, useragent, NULL } }
 
 /* PLUMB(URI) */
 /* This called when some URI which does not begin with "about:",
