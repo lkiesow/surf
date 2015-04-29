@@ -59,7 +59,7 @@ static Bool allowgeolocation      = TRUE;
 			else \
 				echo 'Starting download…'; \
 				curl --cookie ~/.surf/curl_cookies.txt \
-				--user-agent '$1' '$0' --remote-header-name -O; \
+				--user-agent '$1' '$0' --remote-header-name -L -O; \
 				rm -f ~/.surf/curl_cookies.txt; \
 				echo Hit return...; \
 				read; exit; \
