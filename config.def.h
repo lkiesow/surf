@@ -18,7 +18,7 @@ static gfloat zoomlevel = 1.0;       /* Default zoom level */
 static char *cookiefile     = "~/.surf/cookies.txt";
 static char *cookiepolicies = "Aa@"; /* A: accept all; a: accept nothing,
                                         @: accept no third party */
-static char *cafile         = "/etc/ssl/certs/ca-certificates.crt";
+static char *cafile         = "/etc/pki/tls/certs/ca-bundle.crt";
 static char *strictssl      = FALSE; /* Refuse untrusted SSL connections */
 static time_t sessiontime   = 3600;
 
@@ -27,7 +27,7 @@ static Bool enablescrollbars      = TRUE;
 static Bool enablespatialbrowsing = TRUE;
 static Bool enablediskcache       = TRUE;
 static int diskcachebytes         = 5 * 1024 * 1024;
-static Bool enableplugins         = TRUE;
+static Bool enableplugins         = FALSE;
 static Bool enablescripts         = TRUE;
 static Bool enableinspector       = TRUE;
 static Bool enablestyles          = TRUE;
