@@ -3,7 +3,7 @@
 surf \- simple webkit-based browser
 .SH SYNOPSIS
 .B surf
-.RB [-bBdDfFgGiIkKmMnNpPsSvx]
+.RB [-bBdDfFgGiIkKlmMnNpPsSvx0]
 .RB [-a\ cookiepolicies]
 .RB [-c\ cookiefile]
 .RB [-e\ xid]
@@ -11,6 +11,7 @@ surf \- simple webkit-based browser
 .RB [-t\ stylefile]
 .RB [-u\ useragent]
 .RB [-z\ zoomlevel]
+.RB [-0\ filterfile]
 .RB "URI"
 .SH DESCRIPTION
 surf is a simple Web browser based on WebKit/GTK+. It is able
@@ -62,8 +63,11 @@ Disable giving the geolocation to websites.
 .B \-G
 Enable giving the geolocation to websites.
 .TP
+.B \-f filterfile 
+Specify the filterfile to use.
+.TP
 .B \-i
-Disable Images
+Disable Images.
 .TP
 .B \-I
 Enable Images
@@ -73,6 +77,9 @@ Disable kiosk mode (disable key strokes and right click)
 .TP
 .B \-K
 Enable kiosk mode (disable key strokes and right click)
+.TP
+.B \-l
+Print URIs and applied filter to stdout.
 .TP
 .B \-m
 Disable the site-specific styles.
@@ -87,7 +94,7 @@ Disable the Web Inspector (Developer Tools).
 Enable the Web Inspector (Developer Tools).
 .TP
 .B \-p
-Disable Plugins
+Disable Plugins.
 .TP
 .B \-P
 Enable Plugins

@@ -34,6 +34,14 @@ char *argv0;
 #define COOKIEJAR_TYPE          (cookiejar_get_type ())
 #define COOKIEJAR(obj)          (G_TYPE_CHECK_INSTANCE_CAST ((obj), COOKIEJAR_TYPE, CookieJar))
 
+#define COLOR_RED     "\x1b[31m"
+#define COLOR_GREEN   "\x1b[32m"
+#define COLOR_YELLOW  "\x1b[33m"
+#define COLOR_BLUE    "\x1b[34m"
+#define COLOR_MAGENTA "\x1b[35m"
+#define COLOR_CYAN    "\x1b[36m"
+#define COLOR_RESET   "\x1b[0m"
+
 enum { AtomFind, AtomGo, AtomUri, AtomLast };
 enum {
 	ClkDoc   = WEBKIT_HIT_TEST_RESULT_CONTEXT_DOCUMENT,
@@ -102,6 +110,7 @@ static GdkNativeWindow embed = 0;
 static gboolean showxid = FALSE;
 static char winid[64];
 static gboolean usingproxy = 0;
+static gboolean logurls = 0;
 static char togglestat[9];
 static char pagestat[3];
 static GTlsDatabase *tlsdb;
@@ -210,6 +219,22 @@ static void windowobjectcleared(GtkWidget *w, WebKitWebFrame *frame,
 		JSContextRef js, JSObjectRef win, Client *c);
 static void zoom(Client *c, const Arg *arg);
 
+/* Filter and matching functions */
+
+int	match(const char*, const char*);
+int	matchhere(const char*, const char*);
+int	matchstar(int, const char*, const char*);
+
+int filter_load();
+int filter_match(const char *s, unsigned int idx, int isregexp);
+char* filter_match_any(const char *s);
+
+char   filterbuf[1024*1024];
+char*  filterstr[1024];
+char*  filterregexp[1024];
+int    filterstrlen = 0;
+int    filterregexplen = 0;
+
 /* configuration, allows nested code to access above variables */
 #include "config.h"
 
@@ -232,7 +257,35 @@ beforerequest(WebKitWebView *w, WebKitWebFrame *f, WebKitWebResource *r,
 		WebKitNetworkRequest *req, WebKitNetworkResponse *resp,
 		Client *c) {
 	const gchar *uri = webkit_network_request_get_uri(req);
+
 	int i, isascii = 1;
+
+	if (strstr(uri, "data:") == uri) {
+		if (logurls) {
+			char* tmp = g_strdup(uri);
+			if (strlen(tmp) > 22) {
+				tmp[22] = 0;
+			}
+			printf("%sLoading data uri (%s...) -> not filtering%s\n",
+					COLOR_BLUE, tmp, COLOR_RESET);
+			g_free(tmp);
+		}
+	} else if (logurls) {
+		char * matching = NULL;
+		if ((matching = filter_match_any(uri))) {
+			/* If filter matches, prevent page from loading */
+			printf("%sLoading \"%s\"  ->  blocked (%s)%s\n", 
+					COLOR_RED, uri, matching, COLOR_RESET);
+			webkit_network_request_set_uri(req, "about:blank");
+		} else {
+			printf("%sLoading \"%s\"  ->  ok%s\n", COLOR_GREEN, uri, COLOR_RESET);
+		}
+	} else {
+		if (filter_match_any(uri)) {
+			/* If filter matches, prevent page from loading */
+			webkit_network_request_set_uri(req, "about:blank");
+		}
+	}
 
 	if(g_str_has_suffix(uri, "/favicon.ico"))
 		webkit_network_request_set_uri(req, "about:blank");
@@ -1008,7 +1061,7 @@ newclient(void) {
 static void
 newwindow(Client *c, const Arg *arg, gboolean noembed) {
 	guint i = 0;
-	const char *cmd[18], *uri;
+	const char *cmd[19], *uri;
 	const Arg a = { .v = (void *)cmd };
 	char tmp[64];
 
@@ -1036,6 +1089,8 @@ newwindow(Client *c, const Arg *arg, gboolean noembed) {
 		cmd[i++] = "-x";
 	if(enablediskcache)
 		cmd[i++] = "-D";
+	if(logurls)
+		cmd[i++] = "-l";
 	cmd[i++] = "-c";
 	cmd[i++] = cookiefile;
 	cmd[i++] = "--";
@@ -1540,10 +1595,11 @@ updatewinid(Client *c) {
 
 static void
 usage(void) {
-	die("usage: %s [-bBfFgGiIkKnNpPsSvx]"
+	die("usage: %s [-bBfFgGiIkKnNpPsSvx0]"
 		" [-a cookiepolicies ] "
 		" [-c cookiefile] [-e xid] [-r scriptfile]"
 		" [-t stylefile] [-u useragent] [-z zoomlevel]"
+		" [-0 filterile]"
 		" [uri]\n", basename(argv0));
 }
 
@@ -1568,6 +1624,124 @@ zoom(Client *c, const Arg *arg) {
 		webkit_web_view_set_zoom_level(c->view, 1.0);
 	}
 }
+
+
+/* matchhere: search for regexp at beginning of text */
+int matchhere(const char *regexp, const char *text)
+{
+	if (regexp[0] == '\0')
+		return 1;
+	if (regexp[1] == '*')
+		return matchstar(regexp[0], regexp+2, text);
+	if (regexp[0] == '$' && regexp[1] == '\0')
+		return *text == '\0';
+	if (*text!='\0' && (regexp[0]=='.' || regexp[0]==*text))
+		return matchhere(regexp+1, text+1);
+	return 0;
+}
+
+
+/* match: search for regexp anywhere in text */
+int match(const char *regexp, const char *text)
+{
+	if (regexp[0] == '^')
+		return matchhere(regexp+1, text);
+	do {	/* must look even if string is empty */
+		if (matchhere(regexp, text))
+			return 1;
+	} while (*text++ != '\0');
+	return 0;
+}
+
+
+/* matchstar: search for c*regexp at beginning of text */
+int matchstar(int c, const char *regexp, const char *text)
+{
+	do {	/* a * matches zero or more instances */
+		if (matchhere(regexp, text))
+			return 1;
+	} while (*text != '\0' && (*text++ == c || c == '.'));
+	return 0;
+}
+
+
+int filter_load()
+{
+	/** 
+	 * If filter are already loaded 
+	 * return the amount of filters.
+	 **/
+	if (filterstrlen || filterregexplen) {
+		return 1;
+	}
+	filterstrlen = 0;
+	filterregexplen = 0;
+	/* Otherwise read them from filterfile. */
+	FILE* f = fopen(buildpath(filterfile), "r");
+	if (!f) {
+		return 0;
+	}
+	char buf[1024];
+	char* bufpos = filterbuf;
+	while ( fgets(buf, 1024, f) ) {
+		/* Remove newline characters */
+		if (strlen(buf) && buf[strlen(buf)-1] == '\n') {
+			buf[strlen(buf)-1] = 0;
+		}
+		/* Remove empty lines and comments. */
+		if (!strlen(buf) || buf[0] == '#') {
+			continue;
+		}
+		/* Determine if string is regexp or normal string. We tread strings which
+		 * start with | as regular expressions as the | character should not be
+		 * part of any url. */
+		if (buf[0] == '|') {
+			strcpy( bufpos, buf+1 ); /* We won't copy the | character */
+			filterregexp[filterregexplen] = bufpos;
+			filterregexplen++;
+		} else {
+			strcpy( bufpos, buf ); 
+			filterstr[filterstrlen] = bufpos;
+			filterstrlen++;
+		}
+		bufpos += strlen(buf) + 1;
+	}
+	fclose(f);
+	return 1;
+}
+
+
+int filter_match(const char *s, unsigned int idx, int isregexp)
+{
+	/* Make sure filter is loaded */
+	filter_load();
+	/* Handle RegExp */
+	if (isregexp) {
+		return (idx >= filterregexplen) ? 0 : match( filterregexp[idx], s );
+	}
+	/* Handle normal substring */
+	return (idx < filterstrlen) && g_strrstr(s, filterstr[idx]) ? 1 : 0;
+}
+
+
+char *filter_match_any(const char *s)
+{
+	/* Make sure filter is loaded */
+	filter_load();
+	int i;
+	for ( i = 0; i < filterstrlen; i++ ) {
+		if (g_strrstr(s, filterstr[i])) {
+			return filterstr[i];
+		}
+	}
+	for ( i = 0; i < filterregexplen; i++ ) {
+		if (match( filterregexp[i], s )) {
+			return filterregexp[i];
+		}
+	}
+	return NULL;
+}
+
 
 int
 main(int argc, char *argv[]) {
@@ -1623,6 +1797,9 @@ main(int argc, char *argv[]) {
 	case 'K':
 		kioskmode = 1;
 		break;
+	case 'l':
+		logurls = 1;
+		break;
 	case 'm':
 		enablestyles = 0;
 		break;
@@ -1664,6 +1841,9 @@ main(int argc, char *argv[]) {
 		break;
 	case 'z':
 		zoomlevel = strtof(EARGF(usage()), NULL);
+		break;
+	case '0':
+		filterfile = EARGF(usage());
 		break;
 	default:
 		usage();
