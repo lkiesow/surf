@@ -219,7 +219,7 @@ beforerequest(WebKitWebView *w, WebKitWebResource *r, WebKitURIRequest *req,
 	const gchar *uri = webkit_uri_request_get_uri(req);
 	int i, isascii = 1;
 
-	if (strstr(uri, "data:") != uri) {
+	if (strstr(uri, "data:") == uri) {
 		if (logurls) {
 			char* tmp = g_strdup(uri);
 			if (strlen(tmp) > 22) {
