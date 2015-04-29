@@ -1,13 +1,15 @@
 # This files contains filter rules for the surf webbrowser.
-# Each line contains one rule. 
+# Each line contains one rule.
 # - If a line starts with # then it is interpreted as comment.
 # - If the line is empty then it will be ignored (Beware of spaces!).
-# - If a line starts with | then the following string will be 
+# - If a line starts with | then the following string will be
 #   interpreted as regular expression.
-# - If neither of the above rules apply then sites which contains 
+# - If neither of the above rules apply then sites which contains
 #   the specific string will be blocked.
 
+#edgesuite.net
 .com.com/
+/adServe
 /newlay/
 32d1d3b9c.se
 360yield.com
@@ -25,9 +27,11 @@ adbrite.com
 adbroker.de
 adcash.com
 adcell.de
+adclear.baur.de
 addthis.com
 adf.ly
 adform.net
+adition.com
 adjug.com
 admeld.com
 adnet.de
@@ -50,6 +54,7 @@ adshost2.com
 adspirit
 adspring.to
 adsrvr.org
+adsupply.com
 adtech.de
 adtiger.de
 advertising
@@ -60,6 +65,7 @@ amateurcommunity.com
 amazon-adsystem
 at.amgdgt.com
 auto-im.com
+banner.t-online.de
 bidswitch.net
 binlayer.com
 blackbeats.fm
@@ -69,15 +75,20 @@ cambabestube.com
 campartner.com
 cbox.ws
 cdn-careers.sstatic.net
+chartbeat.com
+clickfuse.com
 clicksor.com/
 clicksor.net
+clk1005.com
+clkrev.com
+cqq5id8n.com
+criteo.com
 cyonix.to
 d1110e4.se
 dnsadvantage.com
 dotomi.com/
 doubleclick.net
 dt07.net
-edgesuite.net
 emediate.eu
 erotikdeal.com
 exchangecash.de
@@ -86,6 +97,7 @@ fastclick.net
 fhserve.com
 firstload.
 friendlyduck.com/
+fwmrm.net/ad
 geilundlive
 getiton.com
 gigaflat.com/
@@ -95,14 +107,17 @@ google-analytics
 google.com/ads/
 googleads
 gostats.com
+gr2hk6ze.com
 hdpornleech.com
 histats.com
 i.po.st
 imediacorps.com
+indicate.to
 infolinks.com
 insightexpressai.com
 interracialbangblog.info
 invitemedia.com
+ioam.de
 jetload321.com
 juicyads.com
 layer-ad
@@ -114,19 +129,25 @@ live6.com/
 liveadexchanger
 livejasmin.com
 marketing-by-phone.de
+meetrics.net
 megastock.ru
 mgid.com
 mini-spiele.net
 msecnd.net
+mxcdn.net
 mydirtyhobby.com
 myfreebannercreator.com
 myroitracking.com
 network-media.info
 netxmedia.net
+newtention.net
+nr-data.net
 nuggad.net
+oclaserver.com
 onclickads.net
 onflash.de
 openx.informatm.com
+optimizely.com
 ourstats.de
 picload.org
 popads.net
@@ -139,9 +160,11 @@ quantserve.com
 reduxmediia.com/
 resultsaccelerator.net
 rotator.trafficbee
+rtbpop.com
 rubiconproject.com
 scorecardresearch.com
 search4passion.com
+segment.io
 semasio.net
 sexpartnerx.com/
 sharethis.com
@@ -149,26 +172,32 @@ sitescout.com
 skimresources.com
 slimtrade.com
 sponsorads
+stargamnes.com
 statcounter.com
 technik-test.info
+theadex.com
 tipico.com
 tldadserv.com
+tonefuse.com
+totaladperformance.com
 traffichaus.com
 trafit.com
 tribalfusion.com
 triggit.com
 trw12.com
 tuberewards.com
-twimg.com/
 twitter.com/widgets/tweet_button
 uimserv.net
 verticalnetwork.de
+vevo.com/adsales
 vivisventure.com
 vuiads.org
 wetholefans.com
 whaleserver.com
 widgets.amung.us
 wigetmedia.com
+wwv4ez0n.com
+xiti.com
 xtendmedia.com
 xvalue.de
 xxx-ranking.net/
