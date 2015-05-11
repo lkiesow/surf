@@ -6,6 +6,7 @@
 #include <signal.h>
 #include <X11/X.h>
 #include <X11/Xatom.h>
+#include <gtk/gtkx.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkx.h>
 #include <gdk/gdk.h>
@@ -54,6 +55,7 @@ union Arg {
 
 typedef struct Client {
 	GtkWidget *win, *scroll, *vbox, *pane;
+	GdkWindow *cwin;
 	WebKitWebView *view;
 	WebKitWebInspector *inspector;
 	char *title, *linkhover;
@@ -98,7 +100,7 @@ typedef struct {
 static Display *dpy;
 static Atom atoms[AtomLast];
 static Client *clients = NULL;
-static GdkNativeWindow embed = 0;
+static Window embed = 0;
 static gboolean showxid = FALSE;
 static char winid[64];
 static gboolean usingproxy = 0;
@@ -567,7 +569,7 @@ getatom(Client *c, int a) {
 	unsigned long ldummy;
 	unsigned char *p = NULL;
 
-	XGetWindowProperty(dpy, GDK_WINDOW_XID(GTK_WIDGET(c->win)->window),
+	XGetWindowProperty(dpy, GDK_WINDOW_XID(c->cwin),
 			atoms[a], 0L, BUFSIZ, False, XA_STRING,
 			&adummy, &idummy, &ldummy, &ldummy, &p);
 	if(p) {
@@ -833,10 +835,10 @@ newclient(void) {
 		addaccelgroup(c);
 
 	/* Pane */
-	c->pane = gtk_vpaned_new();
+	c->pane = gtk_paned_new(GTK_ORIENTATION_VERTICAL);
 
 	/* VBox */
-	c->vbox = gtk_vbox_new(FALSE, 0);
+	c->vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	gtk_paned_pack1(GTK_PANED(c->pane), c->vbox, TRUE, TRUE);
 
 	/* Webview */
@@ -914,10 +916,11 @@ newclient(void) {
 	gtk_widget_show(c->scroll);
 	gtk_widget_show(GTK_WIDGET(c->view));
 	gtk_widget_show(c->win);
+	c->cwin = gtk_widget_get_window(GTK_WIDGET(c->win));
 	gtk_window_set_geometry_hints(GTK_WINDOW(c->win), NULL, &hints,
 			GDK_HINT_MIN_SIZE);
-	gdk_window_set_events(GTK_WIDGET(c->win)->window, GDK_ALL_EVENTS_MASK);
-	gdk_window_add_filter(GTK_WIDGET(c->win)->window, processx, c);
+	gdk_window_set_events(c->cwin, GDK_ALL_EVENTS_MASK);
+	gdk_window_add_filter(c->cwin, processx, c);
 	webkit_web_view_set_full_content_zoom(c->view, TRUE);
 
 	runscript(frame);
@@ -953,7 +956,7 @@ newclient(void) {
 	 * It is equivalent to firefox's "layout.css.devPixelsPerPx" setting.
 	 */
 	if(zoomto96dpi) {
-		screen = gdk_window_get_screen(GTK_WIDGET(c->win)->window);
+		screen = gdk_window_get_screen(c->cwin);
 		dpi = gdk_screen_get_resolution(screen);
 		if(dpi != -1) {
 			g_object_set(G_OBJECT(settings), "enforce-96-dpi", true,
@@ -995,7 +998,7 @@ newclient(void) {
 	if(showxid) {
 		gdk_display_sync(gtk_widget_get_display(c->win));
 		printf("%u\n",
-			(guint)GDK_WINDOW_XID(GTK_WIDGET(c->win)->window));
+			(guint)GDK_WINDOW_XID(c->cwin));
 		fflush(NULL);
                 if (fclose(stdout) != 0) {
 			die("Error closing stdout");
@@ -1073,15 +1076,13 @@ menuactivate(GtkMenuItem *item, Client *c) {
 	 * context-menu-action-12	stop
 	 */
 
-	GtkAction *a = NULL;
-	const char *name, *uri;
+	const gchar *name, *uri;
 	GtkClipboard *prisel, *clpbrd;
 
-	a = gtk_activatable_get_related_action(GTK_ACTIVATABLE(item));
-	if(a == NULL)
+	name = gtk_actionable_get_action_name(GTK_ACTIONABLE(item));
+	if(name == NULL)
 		return;
 
-	name = gtk_action_get_name(a);
 	if(!g_strcmp0(name, "context-menu-action-3")) {
 		prisel = gtk_clipboard_get(GDK_SELECTION_PRIMARY);
 		gtk_clipboard_set_text(prisel, c->linkhover, -1);
@@ -1195,7 +1196,7 @@ scroll(GtkAdjustment *a, const Arg *arg) {
 static void
 setatom(Client *c, int a, const char *v) {
 	XSync(dpy, False);
-	XChangeProperty(dpy, GDK_WINDOW_XID(GTK_WIDGET(c->win)->window),
+	XChangeProperty(dpy, GDK_WINDOW_XID(c->cwin),
 			atoms[a], XA_STRING, 8, PropModeReplace,
 			(unsigned char *)v, strlen(v) + 1);
 }
@@ -1213,7 +1214,7 @@ setup(void) {
 	sigchld(0);
 	gtk_init(NULL, NULL);
 
-	dpy = GDK_DISPLAY();
+	dpy = GDK_DISPLAY_XDISPLAY(gdk_display_get_default());
 
 	/* atoms */
 	atoms[AtomFind] = XInternAtom(dpy, "_SURF_FIND", False);
@@ -1508,7 +1509,7 @@ updatetitle(Client *c) {
 static void
 updatewinid(Client *c) {
 	snprintf(winid, LENGTH(winid), "%u",
-			(int)GDK_WINDOW_XID(GTK_WIDGET(c->win)->window));
+			(int)GDK_WINDOW_XID(c->cwin));
 }
 
 static void
