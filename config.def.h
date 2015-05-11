@@ -1,14 +1,13 @@
 /* modifier 0 means no modifier */
 static char *useragent      = "Mozilla/5.0 (X11; U; Unix; en-US) "
-	"AppleWebKit/537.15 (KHTML, like Gecko) Chrome/24.0.1295.0 "
-	"Safari/537.15 Surf/"VERSION;
+	"AppleWebKit/601.1 (KHTML, like Gecko) Version/8.0 Safari/601.1"
+	"Surf/"VERSION;
 static char *scriptfile     = "~/.surf/script.js";
 static char *styledir       = "~/.surf/styles/";
 static char *cachefolder    = "~/.surf/surf2cache/";
 
 static Bool kioskmode       = FALSE; /* Ignore shortcuts */
 static Bool showindicators  = TRUE;  /* Show indicators in window title */
-static Bool zoomto96dpi     = TRUE;  /* Zoom pages to always emulate 96dpi */
 static Bool runinfullscreen = FALSE; /* Run in fullscreen mode by default */
 
 static guint defaultfontsize = 12;   /* Default font size */
@@ -18,9 +17,7 @@ static gfloat zoomlevel = 1.0;       /* Default zoom level */
 static char *cookiefile     = "~/.surf/surf2cookies.txt";
 static char *cookiepolicies = "Aa@"; /* A: accept all; a: accept nothing,
                                         @: accept no third party */
-static char *cafile         = "/etc/ssl/certs/ca-certificates.crt";
 static char *strictssl      = FALSE; /* Refuse untrusted SSL connections */
-static time_t sessiontime   = 3600;
 
 /* Webkit default features */
 static Bool enablescrollbars      = TRUE;
