@@ -4,7 +4,7 @@ static char *useragent      = "Mozilla/5.0 (X11; U; Unix; en-US) "
 	"Safari/537.15 Surf/"VERSION;
 static char *scriptfile     = "~/.surf/script.js";
 static char *styledir       = "~/.surf/styles/";
-static char *cachefolder    = "~/.surf/cache/";
+static char *cachefolder    = "~/.surf/surf2cache/";
 
 static Bool kioskmode       = FALSE; /* Ignore shortcuts */
 static Bool showindicators  = TRUE;  /* Show indicators in window title */
@@ -15,7 +15,7 @@ static guint defaultfontsize = 12;   /* Default font size */
 static gfloat zoomlevel = 1.0;       /* Default zoom level */
 
 /* Soup default features */
-static char *cookiefile     = "~/.surf/cookies.txt";
+static char *cookiefile     = "~/.surf/surf2cookies.txt";
 static char *cookiepolicies = "Aa@"; /* A: accept all; a: accept nothing,
                                         @: accept no third party */
 static char *cafile         = "/etc/ssl/certs/ca-certificates.crt";
@@ -26,7 +26,6 @@ static time_t sessiontime   = 3600;
 static Bool enablescrollbars      = TRUE;
 static Bool enablespatialbrowsing = TRUE;
 static Bool enablediskcache       = TRUE;
-static int diskcachebytes         = 5 * 1024 * 1024;
 static Bool enableplugins         = TRUE;
 static Bool enablescripts         = TRUE;
 static Bool enableinspector       = TRUE;
@@ -34,6 +33,8 @@ static Bool enablestyles          = TRUE;
 static Bool loadimages            = TRUE;
 static Bool hidebackground        = FALSE;
 static Bool allowgeolocation      = TRUE;
+static WebKitFindOptions findopts = WEBKIT_FIND_OPTIONS_CASE_INSENSITIVE |
+                                    WEBKIT_FIND_OPTIONS_WRAP_AROUND;
 
 #define SETPROP(p, q) { \
 	.v = (char *[]){ "/bin/sh", "-c", \
@@ -107,7 +108,6 @@ static Key keys[] = {
 
     { 0,                    GDK_KEY_F11,    fullscreen, { 0 } },
     { 0,                    GDK_KEY_Escape, stop,       { 0 } },
-    { MODKEY,               GDK_KEY_o,      source,     { 0 } },
     { MODKEY|GDK_SHIFT_MASK,GDK_KEY_o,      inspector,  { 0 } },
 
     { MODKEY,               GDK_KEY_g,      spawn,      SETPROP("_SURF_URI", "_SURF_GO") },
@@ -128,12 +128,12 @@ static Key keys[] = {
 };
 
 /* button definitions */
-/* click can be ClkDoc, ClkLink, ClkImg, ClkMedia, ClkSel, ClkEdit, ClkAny */
+/* where can be OnDoc, OnLink, OnImg, OnMedia, OnSel, OnEdit, OnAny */
 static Button buttons[] = {
-    /* click                event mask  button  function        argument */
-    { ClkLink,              0,          2,      linkopenembed,  { 0 } },
-    { ClkLink,              MODKEY,     2,      linkopen,       { 0 } },
-    { ClkLink,              MODKEY,     1,      linkopen,       { 0 } },
-    { ClkAny,               0,          8,      navigate,       { .i = -1 } },
-    { ClkAny,               0,          9,      navigate,       { .i = +1 } },
+    /* where                event mask  button  function        argument */
+    { OnLink,               0,          2,      linkopenembed,  { 0 } },
+    { OnLink,               MODKEY,     2,      linkopen,       { 0 } },
+    { OnLink,               MODKEY,     1,      linkopen,       { 0 } },
+    { OnAny,                0,          8,      navigate,       { .i = -1 } },
+    { OnAny,                0,          9,      navigate,       { .i = +1 } },
 };
