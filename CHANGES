@@ -1,0 +1,17 @@
+Changes from WebKit1 to WebKit2
+===============================
+
++ Source view is not available anymore (the inspector should be sufficient)
+
++ Scrolling and toggling scrollbars visbility are done using JavaScript.
+
+ 	This a workaround until we find a way to access the GtkScrolledWindow
+	from the WebKitWebView, maybe using Web Extensions.
+
++ The cookie handling is now done by the WebKitCookieManager.
+
+	We still decide the accepting policy and where they are stored.
+
++ The proxy handling is entirely done by libsoup and we have no control over it.
+
+	You can set *_proxy env parameters or configure it globally in Gnome3.
