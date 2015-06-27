@@ -1118,10 +1118,10 @@ static void
 togglescrollbars(Client *c, const Arg *arg) {
 	if (enablescrollbars) {
 		evalscript(c->view,
-		    "document.documentElement.style.overflow = 'auto'");
+		    "document.documentElement.style.overflow = 'hidden'");
 	} else {
 		evalscript(c->view,
-		    "document.documentElement.style.overflow = 'hidden'");
+		    "document.documentElement.style.overflow = 'auto'");
 	}
 	enablescrollbars = !enablescrollbars;
 }
