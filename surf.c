@@ -892,13 +892,13 @@ reload(Client *c, const Arg *arg) {
 static void
 scroll_h(Client *c, const Arg *arg) {
 	evalscript(c->view,
-		"window.scrollBy(%d * (window.innerWidth / 10), 0)", arg->i);
+		"window.scrollBy(%d * (window.innerWidth / 100), 0)", arg->i);
 }
 
 static void
 scroll_v(Client *c, const Arg *arg) {
 	evalscript(c->view,
-		"window.scrollBy(0, %d * (window.innerHeight / 10))", arg->i);
+		"window.scrollBy(0, %d * (window.innerHeight / 100))", arg->i);
 }
 
 static void
