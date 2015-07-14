@@ -624,7 +624,8 @@ loadchanged(WebKitWebView *view, WebKitLoadEvent event, Client *c) {
 		break;
 	case WEBKIT_LOAD_COMMITTED:
 		uri = geturi(c);
-		if (webkit_web_view_get_tls_info(c->view, NULL, &tlsflags)) {
+		if (webkit_web_view_get_tls_info(c->view, NULL, &tlsflags) &&
+		    tlsflags) {
 			c->sslfailed = TRUE;
 		}
 		setatom(c, AtomUri, uri);
