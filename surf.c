@@ -1011,6 +1011,7 @@ show(WebKitWebView *view, Client *c) {
 	}
 
 	gtk_widget_show_all(c->win);
+	gtk_widget_grab_focus(GTK_WIDGET(c->view));
 
 	c->cwin = gtk_widget_get_window(GTK_WIDGET(c->win));
 	gtk_window_set_geometry_hints(GTK_WINDOW(c->win), NULL, &hints,
