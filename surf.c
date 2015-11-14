@@ -908,6 +908,33 @@ processx(GdkXEvent *e, GdkEvent *event, gpointer d) {
 				return GDK_FILTER_REMOVE;
 			} else if(ev->atom == atoms[AtomGo]) {
 				arg.v = getatom(c, AtomGo);
+				if (strstr((char*) arg.v, "g ") && strlen((char*) arg.v) > 2) {
+					arg.v = g_strdup_printf("http://www.google.de/search?q=%s", 
+							((char*) arg.v)+2);
+				} else if (strstr((char*) arg.v, "ew ") && strlen((char*) arg.v) > 3) {
+					arg.v = g_strdup_printf("http://en.wikipedia.org/w/index.php"
+							"?search=%s&title=Special%%3ASearch", ((char*) arg.v)+3);
+				} else if (strstr((char*) arg.v, "w ") && strlen((char*) arg.v) > 2) {
+					arg.v = g_strdup_printf("http://de.wikipedia.org/w/index.php"
+							"?search=%s&title=Special%%3ASearch", ((char*) arg.v)+2);
+				} else if (strstr((char*) arg.v, "y ") && strlen((char*) arg.v) > 2) {
+					arg.v = g_strdup_printf("http://www.youtube.com/results"
+							"?search_query=%s", ((char*) arg.v)+2);
+				} else if (strstr((char*) arg.v, "en ") && strlen((char*) arg.v) > 3) {
+					arg.v = g_strdup_printf("http://dict.leo.org"
+							"/dictQuery/m-vocab/ende/en.html?search=%s", 
+							((char*) arg.v)+2);
+				} else if (strstr((char*) arg.v, "i ") && strlen((char*) arg.v) > 2) {
+					/* Replace spaces by + as spaces (%20) won't work: */
+					char* c = (char*) arg.v;
+					for (; *c != 0; c++) {
+						if (*c == ' ') {
+							*c = '+';
+						}
+					}
+					arg.v = g_strdup_printf("http://imdb.com/"
+							"find?s=tt&ttype=ft&q=%s", ((char*) arg.v)+2);
+				}
 				loaduri(c, &arg);
 
 				return GDK_FILTER_REMOVE;
